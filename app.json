@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "construction-worker",
+    "slug": "construction-worker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cadimayouseeit.constructionWorker",
+      "config":{
+        "googleMapsApiKey": "AIzaSyB10FuMytiHIS1hS715px9neYV8POj4iTg"
+      },
+      "infoPlist":{
+        "NSCameraUsageDescription": "We need to use your camera to display your profile picture",
+        "NSLocationWhenInUseUsageDescription": "We need to use your location to display nearby workers and distance",
+        "NSLocationAlwaysUsageDescription": "We need to use your location to display nearby workers and distance",
+        "NSLocationUsageDescription": "We need to use your location to display nearby workers and distance"
+      }
+    },
+    "android": {
+      "package": "com.cadimayouseeit.constructionWorker",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyCPdOerxA3upMhvrOPMXoIaU2czY2rISmo" }   
+     }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
