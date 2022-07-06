@@ -11,21 +11,19 @@ import { Loading } from './Loading';
 
 export default function Login({navigation}) {
 
-    const [userToken, setUserToken] = React.useState('');
-    const [email, setEmail] = React.useState('esraa.98300@live.co.uk');
+    const [email, setEmail] = React.useState('esraa@cadimayouseeit.com');
     const [pass, setPass] = React.useState('esraa123');
     const [loading, setLoading] = React.useState(false);
     const directus = new Directus('https://iw77uki0.directus.app');
 
     async function login(){
-      setLoading(true);
       await directus.items('users').readByQuery({
         filter: {
           email: email
         },
       }).then(async(res) => {
-        var hash_password = res.data[0].password;
         if(res.data.length > 0){ //user with this email exists
+          var hash_password = res.data[0].password;
           await directus.utils.hash.verify(pass, hash_password)
           .then((matches) => {
             if(matches == true){ //account valid
@@ -124,6 +122,15 @@ export default function Login({navigation}) {
             />
           </View>
         </View>
+        
+        <View style={styles.buttonStyleX}>
+          
+        <View style={styles.text3}>
+          <Text>Forgot Password? </Text>
+          <TouchableOpacity onPress={() => {navigation.navigate('Reset')}} ><Text style={styles.signupText}>Click here to reset</Text></TouchableOpacity>
+        </View>
+        </View>
+       
 
         {/* Button */}
         <View style={styles.buttonStyle}>
@@ -165,6 +172,11 @@ export const styles = StyleSheet.create({
     text2:{
       flexDirection:'row',
       justifyContent:'center',
+      paddingTop:5
+    },
+    text3:{
+      flexDirection:'row',
+      justifyContent:'flex-start',
       paddingTop:5
     },
     signupText:{

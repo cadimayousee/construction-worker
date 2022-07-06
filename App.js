@@ -14,18 +14,31 @@ import {Ionicons} from '@expo/vector-icons';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from "./components/Signup";
+import Reset from "./components/Reset";
+import OTP from "./components/OTP";
+import ChangePassword from "./components/ChangePassword";
 import profile from "./assets/profile.jpg";
 import styles from './styles';
 import 'localstorage-polyfill';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 import 'react-native-get-random-values'
-import * as Localization from 'expo-localization';
 import { fireDB } from './firebase';
 import { Directus } from '@directus/sdk';
+import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
+import localized_strings from './i18n/supportedLanguages';
+
 
 export default function App() {
+
+  React.useEffect(() => {
+    i18n.translations = localized_strings;
+    const locale = Localization.locale;
+    i18n.locale = locale;
+    i18n.fallbacks = true;
+    console.log("locale " + i18n.locale);
+  },[]);
 
   return (
     <SafeAreaProvider>
@@ -34,6 +47,9 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Drawer" component={MyDrawer} />
             <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen name="Reset" component={Reset} />
+            <Stack.Screen name="OTP" component={OTP} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaProvider>

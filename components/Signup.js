@@ -9,7 +9,6 @@ import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import request from '../request';
 import { Loading } from './Loading';
-import BcryptReactNative from 'bcrypt-react-native';
 
 export default function Signup({navigation}) {
     const [firstName, setFirstName] = React.useState('');
@@ -21,21 +20,6 @@ export default function Signup({navigation}) {
     const [userToken, setUserToken] = React.useState(''); //needs dispatch
 
     const directus = new Directus('https://iw77uki0.directus.app');
-
-    async function hashPass(){
-        try{
-
-            const salt = await BcryptReactNative.getSalt(10);
-            const hash = await BcryptReactNative.hash(salt, 'password');
-            const isSame = await BcryptReactNative.compareSync('password', hash);
-            } catch(e) {
-              console.log({ e })
-            }
-    };
-
-    React.useEffect(() => {
-        hashPass();
-    },[]);
 
     async function register(){
 
@@ -57,7 +41,6 @@ export default function Signup({navigation}) {
             // notification token
         }).then((res) => {
             setLoading(false);
-            console.log("response " + JSON.stringify(res));
             navigation.navigate('Drawer');
         });
 
@@ -69,7 +52,7 @@ export default function Signup({navigation}) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
         <View style={styles.Middle}>
-            <Text style={styles.LoginText}>Signup</Text>
+            <Text style={styles.LoginText}>Sign up</Text>
         </View>
         <View style={styles.text2}>
             <Text>Already have account? </Text>
@@ -95,6 +78,7 @@ export default function Signup({navigation}) {
                 />
                 }
                 variant="outline"
+                value={firstName}
                 onChangeText={(text) => setFirstName(text)}
                 placeholder="First Name"
                 _light={{
@@ -128,6 +112,7 @@ export default function Signup({navigation}) {
                 />
                 }
                 variant="outline"
+                value={lastName}
                 onChangeText={(text) => setLastName(text)}
                 placeholder="Last Name"
                 _light={{
@@ -160,6 +145,7 @@ export default function Signup({navigation}) {
                 />
                 }
                 variant="outline"
+                value={email}
                 onChangeText={(text) => setEmail(text)}
                 placeholder="Email"
                 _light={{
@@ -192,6 +178,7 @@ export default function Signup({navigation}) {
                 />
                 }
                 variant="outline"
+                value={pass}
                 secureTextEntry={true}
                 onChangeText={(text) => setPass(text)}
                 placeholder="Password"
@@ -224,6 +211,7 @@ export default function Signup({navigation}) {
                 />
                 }
                 variant="outline"
+                value={confirmPass}
                 secureTextEntry={true}
                 onChangeText={(text) => setConfirmPass(text)}
                 placeholder="Confirm Password"
