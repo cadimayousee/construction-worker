@@ -21,6 +21,8 @@ const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 import 'react-native-get-random-values'
 import * as Localization from 'expo-localization';
+import { fireDB } from './firebase';
+import { Directus } from '@directus/sdk';
 import i18n from 'i18n-js';
 
 export default function App() {
