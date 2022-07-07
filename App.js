@@ -16,27 +16,36 @@ import Login from './components/Login';
 import Signup from "./components/Signup";
 import Reset from "./components/Reset";
 import OTP from "./components/OTP";
-import ChangePassword from "./components/ChangePassword";
+import ChangePassword from "./components/ChangePassword";                    
 import profile from "./assets/profile.jpg";
 import styles from './styles';
 import 'localstorage-polyfill';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-import 'react-native-get-random-values'
+import 'react-native-get-random-values'          
 import { fireDB } from './firebase';
 import { Directus } from '@directus/sdk';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
+import { I18nManager } from 'react-native';
 import localized_strings from './i18n/supportedLanguages';
-
+import Profile from './components/Profile';
 
 export default function App() {
-
   React.useEffect(() => {
     i18n.translations = localized_strings;
     const locale = Localization.locale;
     i18n.locale = locale;
     i18n.fallbacks = true;
+
+    if(i18n.locale.includes('ar')) { //arabic so support rtl
+      I18nManager.allowRTL(true);  
+      I18nManager.forceRTL(true); 
+    }
+    else{
+      I18nManager.allowRTL(false);  
+      I18nManager.forceRTL(false); 
+    }
     console.log("locale " + i18n.locale);
   },[]);
 
@@ -50,15 +59,16 @@ export default function App() {
             <Stack.Screen name="Reset" component={Reset} />
             <Stack.Screen name="OTP" component={OTP} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="Profile" component={Profile} />
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaProvider>
   );
 }
 
-function Item({ item, navigate }) {
+function Item({ item, navigate, userData}) {
   return (
-    <TouchableOpacity style={styles.listItem} onPress={()=> item.name == 'Logout' ? navigate('Login') : null}>
+    <TouchableOpacity style={styles.listItem} onPress={()=> item.name == i18n.t('logout') ? navigate('Login') : item.name == i18n.t('profile') ?  navigate('Profile',{userData}) : null}>
       <Ionicons name={item.icon} size={32} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>
@@ -70,17 +80,21 @@ function CustomDrawerContent(props) {
   const state = {
     routes:[
         {
-            name:"Profile",
+          name:i18n.t('postJob'),
+          icon:"create-outline"
+        },
+        {
+            name: i18n.t('profile'),
             icon:"person-circle-outline"
         },
         {
-            name:"Settings",
+            name:i18n.t('settings'),
             icon:"settings-outline"
         },
         {
-          name:"Logout",
+          name:i18n.t('logout'),
           icon:"exit-outline"
-      },
+        }
     ]
 }
 // {...props}
@@ -93,7 +107,7 @@ function CustomDrawerContent(props) {
               <FlatList
                   style={styles.flatList}
                   data={state.routes}
-                  renderItem={({ item }) => <Item  item={item} navigate={props.navigation.navigate}/>}
+                  renderItem={({ item }) => <Item  item={item} navigate={props.navigation.navigate} userData={userData}/>}
                   keyExtractor={item => item.name}
               />
           </View>

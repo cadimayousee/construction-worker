@@ -8,6 +8,7 @@ import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
 import axios from 'axios';
+import i18n from 'i18n-js';
 
 export default function ChangePassword ({navigation, route}){
     const userData = route.params;
@@ -20,7 +21,7 @@ export default function ChangePassword ({navigation, route}){
     async function changePassword(){
         if(pass !== confirmPass){
             setLoading(false);
-            alert('Passwords do not match, please try again')
+            alert(i18n.t('noPassMatch'))
         }
         else{
             //patch
@@ -45,11 +46,11 @@ export default function ChangePassword ({navigation, route}){
             <View style={styles.container}>
     
             <View style={styles.Middle}>
-              <Text style={styles.LoginText}>Change Password</Text>
+              <Text style={styles.LoginText}>{i18n.t('changePass')}</Text>
             </View>
 
             <View style={styles.text2}>
-              <Text style={styles.signupText}>Enter the new Password:</Text>
+              <Text style={styles.signupText}>{i18n.t('enterNewPass')}</Text>
             </View>
     
            
@@ -75,7 +76,7 @@ export default function ChangePassword ({navigation, route}){
                 value={pass}
                 secureTextEntry={true}
                 onChangeText={(text) => setPass(text)}
-                placeholder="Password"
+                placeholder={i18n.t('password')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -108,7 +109,7 @@ export default function ChangePassword ({navigation, route}){
                 value={confirmPass}
                 secureTextEntry={true}
                 onChangeText={(text) => setConfirmPass(text)}
-                placeholder="Confirm Password"
+                placeholder={i18n.t('confirmPass')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -126,7 +127,7 @@ export default function ChangePassword ({navigation, route}){
                     setLoading(true),
                     changePassword()
                 }}>
-                   Confirm Password Change
+                   {i18n.t('confirmPassChange')}
                 </Button>
                 
             </View>

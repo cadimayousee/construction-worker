@@ -8,6 +8,7 @@ import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
 import axios from 'axios';
+import i18n from 'i18n-js';
 
 export default function OTP ({navigation, route}){
     const userData = route.params[0];
@@ -20,7 +21,7 @@ export default function OTP ({navigation, route}){
     async function verifyOTP(){
         if(inputOTP !== otp){
             setLoading(false);
-            alert('OTP Incorrect! Please try again')
+            alert(i18n.t('wrongOTP'))
         }
         else{
             setLoading(false);
@@ -35,11 +36,11 @@ export default function OTP ({navigation, route}){
             <View style={styles.container}>
     
             <View style={styles.Middle}>
-              <Text style={styles.LoginText}>One Time Password</Text>
+              <Text style={styles.LoginText}>{i18n.t('otp')}</Text>
             </View>
 
             <View style={styles.text2}>
-              <Text style={styles.signupText}>Enter the OTP sent on the provided email address:</Text>
+              <Text style={styles.signupText}>{i18n.t('enterOTP')}</Text>
             </View>
     
             {/* Username or Email Input Field */}
@@ -61,7 +62,7 @@ export default function OTP ({navigation, route}){
                     />
                   }
                   variant="outline"
-                  placeholder="OTP 6 Digits"
+                  placeholder={i18n.t('otpDigits')}
                   value={inputOTP}
                   onChangeText={(text) => setInputOTP(text)}
                   _light={{
@@ -82,7 +83,7 @@ export default function OTP ({navigation, route}){
                     setLoading(true),
                     verifyOTP()
                 }}>
-                   Verify OTP
+                   {i18n.t('verifyOTP')}
                 </Button>
                 
             </View>

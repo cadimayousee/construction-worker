@@ -13,17 +13,17 @@ const en = {
     email: "Email",
     password: "Password",
     forgotPassword: "Forgot Password?",
-    clickToReset: "Click here to reset",
+    clickToReset: "Click here to reset your password",
     noPassMatch: "Passwords do not match, please try again",
     emptyFields: "One or more fields are empty, please fill all the fields to register",
-    alreadyAcc: "Already have account?",
+    alreadyAcc: "Already have an account?",
     firstName: "First Name",
     lastName: "Last Name",
     confirmPass: "Confirm Password",
     registerNow: "Register Now",
     resetPass: "Reset Password",
     verifyEmail: "Verify Email Address",
-    verifyEMailBody: "Please Input this OTP (One Time Password) To Reset Password:",
+    verifyEmailBody: "Please Input this OTP (One Time Password) To Reset Password:",
     enterEmail: "Enter the email address associated with account:",
     wrongOTP: "Incorrect OTP, please try again",
     otp: "One Time Password",
@@ -37,11 +37,58 @@ const en = {
     workerInitialDis: "0 km away",
     noPermission: "Permission to access location was denied",
     noOnlineWorkers: "Cannot Get Online Workers ...",
-    kmAway: "km away"
+    kmAway: "km away",
+    viewJobs: "View Recent Jobs",
+    editProfile: "Edit Profile Details",
+    jobsCreated: "Jobs created",
+    workersHired: "Workers hired",
+    rating: "Rating",
+    toastString: "Complete Profile Details to be able to post a job❗",
+    postJob: "Post a job"
 }
+
+// const ar = {
+//     profile: "الملف الشخصي",
+//     settings: "الإعدادات",
+//     logout: "تسجيل الخروج",
+//     wrongEmai: "البريد الإلكتروني غير صحيح أو المستخدم غير موجود ، يرجى المحاولة مرة أخرى",
+//     wrongPassword: "كلمة المرور غير صحيحة ، يرجى المحاولة مرة أخرى",
+//     login: "تسجيل الدخول",
+//     noAccount: "ليس لديك حساب؟",
+//     signup: "الاشتراك",
+//     email: "البريد الإلكتروني",
+//     password: " كلمة المرور",
+//     forgotPassword: "هل نسيت كلمة المرور؟",
+//     clickToReset: "انقر هنا لإعادة تعيين كلمة المرور الخاصة بك",
+//     noPassMatch: "كلمات المرور غير متطابقة ، يرجى المحاولة مرة أخرى",
+//     emptyFields: "هناك خانة واحدة او اكثر فارغة ، يرجى ملئ جميع الخانات للتسجيل",
+//     alreadyAcc: "هل لديك حساب؟",
+//     firstName: "الاسم الاول",
+//     lastName: "اللقب",
+//     confirmPass: "تأكيد كلمة المرور",
+//     registerNow: "سجل الان",
+//     resetPass: "إعادة تعيين كلمة المرور",
+//     verifyEmail: "التحقق من عنوان البريد الإلكتروني",
+//     verifyEmailBody: "الرجاء إدخال كلمة المرور لمرة واحدة لإعادة تعيين كلمة المرور",
+//     enterEmail: ": أدخل عنوان البريد الإلكتروني المرتبط بالحساب",
+//     wrongOTP: "غير صحيح ، يرجى المحاولة مرة أخرى",
+//     otp: "كلمة المرور لمرة واحدة",
+//     enterOTP: "أدخل كلمة المرور التي تستخدم لمرة واحدة والمرسلة على عنوان البريد الإلكتروني المقدم:",
+//     otpDigits: "كلمة مرور لمرة واحدة 6 أرقام",
+//     verifyOTP: "تحقق من كلمة المرور لمرة واحدة",
+//     changePass: "تأكيد تغيير كلمة المرور",
+//     enterNewPass: "أدخل كلمة المرور الجديدة",
+//     confirmPassChange: "تأكيد تغيير كلمة المرور",
+//     searchHere: "ابحث هنا",
+//     workerInitialDis: "0 كم",
+//     noPermission: "تم رفض إذن الوصول إلى الموقع",
+//     noOnlineWorkers: "لا يمكن الحصول على عمال",
+//     kmAway: "كم"
+//   }
 
 const localized_strings = {
     en: en
+    // ar: ar
 };
 
 export default localized_strings;

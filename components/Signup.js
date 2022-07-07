@@ -9,6 +9,7 @@ import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import request from '../request';
 import { Loading } from './Loading';
+import i18n from 'i18n-js';
 
 export default function Signup({navigation}) {
     const [firstName, setFirstName] = React.useState('');
@@ -24,12 +25,12 @@ export default function Signup({navigation}) {
     async function register(){
 
         if(pass !== confirmPass){
-            alert('Passwords do not match, please try again')
+            alert(i18n.t('noPassMatch'))
             return;
         }
 
         if(firstName =='' || lastName == '' || pass == '' || email == '' || confirmPass == ''){
-            alert('One or more fields are empty, please fill all the fields to register')
+            alert(i18n.t('emptyFields'))
             return;
         }
 
@@ -52,11 +53,11 @@ export default function Signup({navigation}) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
         <View style={styles.Middle}>
-            <Text style={styles.LoginText}>Sign up</Text>
+            <Text style={styles.LoginText}>{i18n.t('signup')}</Text>
         </View>
         <View style={styles.text2}>
-            <Text>Already have account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")} ><Text style={styles.signupText}> Login </Text></TouchableOpacity>
+            <Text>{i18n.t('alreadyAcc')} </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")} ><Text style={styles.signupText}> {i18n.t('login')} </Text></TouchableOpacity>
         </View>
 
         {/* Username or Email Input Field */}
@@ -80,7 +81,7 @@ export default function Signup({navigation}) {
                 variant="outline"
                 value={firstName}
                 onChangeText={(text) => setFirstName(text)}
-                placeholder="First Name"
+                placeholder={i18n.t('firstName')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -114,7 +115,7 @@ export default function Signup({navigation}) {
                 variant="outline"
                 value={lastName}
                 onChangeText={(text) => setLastName(text)}
-                placeholder="Last Name"
+                placeholder={i18n.t('lastName')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -147,7 +148,7 @@ export default function Signup({navigation}) {
                 variant="outline"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
-                placeholder="Email"
+                placeholder={i18n.t('email')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -181,7 +182,7 @@ export default function Signup({navigation}) {
                 value={pass}
                 secureTextEntry={true}
                 onChangeText={(text) => setPass(text)}
-                placeholder="Password"
+                placeholder={i18n.t('password')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -214,7 +215,7 @@ export default function Signup({navigation}) {
                 value={confirmPass}
                 secureTextEntry={true}
                 onChangeText={(text) => setConfirmPass(text)}
-                placeholder="Confirm Password"
+                placeholder={i18n.t('confirmPass')}
                 _light={{
                 placeholderTextColor: "blueGray.400",
                 }}
@@ -231,7 +232,7 @@ export default function Signup({navigation}) {
                 setLoading(true), 
                 register()
             }}>
-                REGISTER NOW
+                {i18n.t('registerNow')}
             </Button>
         </View>
         

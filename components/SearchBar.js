@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons , Feather} from '@expo/vector-icons'; 
 import { DrawerActions } from '@react-navigation/native';
+import i18n from 'i18n-js';
 
 const width = Dimensions.get('window').width;
 
@@ -23,7 +24,7 @@ export const SearchBar =  function(props){
 
             <View style = {styles.centerCol}>
                 <Text style={styles.searchTextStyle}>
-                    Search Here ...
+                    {i18n.t('searchHere')}
                 </Text>
             </View>
 

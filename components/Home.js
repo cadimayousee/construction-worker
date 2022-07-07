@@ -7,6 +7,7 @@ import { SearchBar } from './SearchBar';
 import Worker from './Worker';
 import { getDistance, getPreciseDistance } from 'geolib';
 import { getDatabase, ref, set, get, update, child, onValue } from "firebase/database";
+import i18n from 'i18n-js';
 
 export default function Home({navigation}){
   const [region, setRegion] = React.useState();
@@ -17,7 +18,7 @@ export default function Home({navigation}){
   async function getLocationAsync(){
     let { status } = await Location.requestForegroundPermissionsAsync();
     if(status !== 'granted'){
-      alert('Permission to access location was denied');
+      alert(i18n.t('noPermission'));
         return;
     }
     let location = await Location.getCurrentPositionAsync({accuracy : Location.Accuracy.Lowest});
@@ -63,7 +64,7 @@ export default function Home({navigation}){
         }
     })
     .catch((error) => {
-      console.log("Cannot Get Online Workers ... " + error)
+      console.log(i18n.t('noOnlineWorkers') + error)
     });
   
   };
@@ -100,7 +101,7 @@ export default function Home({navigation}){
       >
         {workersLocation.map((worker, index) => {
           return(
-            <Worker key={index} worker={{uid : worker.name , distance: worker.distance + ' km away', location: {longitude: worker.longitude, latitude: worker.latitude}}} />
+            <Worker key={index} worker={{uid : worker.name , distance: worker.distance + ' ' + i18n.t('kmAway'), location: {longitude: worker.longitude, latitude: worker.latitude}}} />
           )
         })}
 

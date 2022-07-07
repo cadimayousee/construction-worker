@@ -7,6 +7,7 @@ import download from "../assets/download.jpeg";
 import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
+import i18n from 'i18n-js';
 
 
 export default function Login({navigation}) {
@@ -32,13 +33,13 @@ export default function Login({navigation}) {
             }
             else{ //incorrect password
               setLoading(false);
-              alert("Incorrect Password! Please try again")
+              alert(i18n.t('wrongPassword'))
             }
           })
         }
         else{
           setLoading(false);
-          alert('Incorrect email or user does not exist');
+          alert(i18n.t('wrongEmail'));
         }
       })
     }
@@ -50,11 +51,11 @@ export default function Login({navigation}) {
         <View style={styles.container}>
 
         <View style={styles.Middle}>
-          <Text style={styles.LoginText}>Login</Text>
+          <Text style={styles.LoginText}>{i18n.t('login')}</Text>
         </View>
         <View style={styles.text2}>
-          <Text>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => {navigation.navigate('Signup')}} ><Text style={styles.signupText}> Sign up</Text></TouchableOpacity>
+          <Text>{i18n.t('noAccount')} </Text>
+          <TouchableOpacity onPress={() => {navigation.navigate('Signup')}} ><Text style={styles.signupText}> {i18n.t('signup')}</Text></TouchableOpacity>
         </View>
 
         {/* Username or Email Input Field */}
@@ -76,7 +77,7 @@ export default function Login({navigation}) {
                 />
               }
               variant="outline"
-              placeholder="Email"
+              placeholder= {i18n.t('email')}
               value={email}
               onChangeText={(text) => setEmail(text)}
               _light={{
@@ -112,7 +113,7 @@ export default function Login({navigation}) {
               secureTextEntry={true}
               onChangeText={(text) => setPass(text)}
               value={pass}
-              placeholder="Password"
+              placeholder={i18n.t('password')}
               _light={{
                 placeholderTextColor: "blueGray.400",
               }}
@@ -126,8 +127,8 @@ export default function Login({navigation}) {
         <View style={styles.buttonStyleX}>
           
         <View style={styles.text3}>
-          <Text>Forgot Password? </Text>
-          <TouchableOpacity onPress={() => {navigation.navigate('Reset')}} ><Text style={styles.signupText}>Click here to reset</Text></TouchableOpacity>
+          <Text>{i18n.t('forgotPassword')}{" "}</Text>
+          <TouchableOpacity onPress={() => {navigation.navigate('Reset')}} ><Text style={styles.signupText}>{i18n.t('clickToReset')}</Text></TouchableOpacity>
         </View>
         </View>
        
@@ -139,7 +140,7 @@ export default function Login({navigation}) {
                 setLoading(true), 
                 login()
             }}>
-               LOGIN
+               {i18n.t('login')}
             </Button>
             
         </View>

@@ -8,6 +8,7 @@ import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
 import axios from 'axios';
+import i18n from 'i18n-js';
 
 export default function Reset({navigation}){
     const [email, setEmail] = React.useState('esraa@cadimayouseeit.com');
@@ -38,8 +39,8 @@ export default function Reset({navigation}){
                     data: {
                         senderId: 'deeef50c-e076-4605-a1fd-abc2c6b823eb',
                         to: email,
-                        subject: "Verify Email Address",
-                        body: `Please Input this OTP (One Time Password) To Reset Password: ${OTP}`,
+                        subject: i18n.t('verifyEmail'),
+                        body: `${i18n.t('verifyEmailBody')} ${OTP}`,
                     },
                 })
                 .then(() => {
@@ -54,7 +55,7 @@ export default function Reset({navigation}){
             }
             else{
                 setLoading(false);
-                alert('Incorrect email or user does not exist');
+                alert(i18n.t('wrongEmail'));
             }
           })
           .catch((error) => {
@@ -69,11 +70,11 @@ export default function Reset({navigation}){
             <View style={styles.container}>
     
             <View style={styles.Middle}>
-              <Text style={styles.LoginText}>Reset Password</Text>
+              <Text style={styles.LoginText}>{i18n.t('resetPass')}</Text>
             </View>
 
             <View style={styles.text2}>
-              <Text style={styles.signupText}>Enter the email address associated with account:</Text>
+              <Text style={styles.signupText}>{i18n.t('enterEmail')}</Text>
             </View>
     
             {/* Username or Email Input Field */}
@@ -95,7 +96,7 @@ export default function Reset({navigation}){
                     />
                   }
                   variant="outline"
-                  placeholder="Email"
+                  placeholder={i18n.t('email')}
                   value={email}
                   onChangeText={(text) => setEmail(text)}
                   _light={{
@@ -116,7 +117,7 @@ export default function Reset({navigation}){
                     setLoading(true),
                     verifyEmail()
                 }}>
-                   Verify Email Address
+                   {i18n.t('verifyEmail')}
                 </Button>
                 
             </View>
