@@ -34,6 +34,8 @@ export default function Signup({navigation}) {
             return;
         }
 
+        //validate email format and send verification otp
+
         await directus.items('users').createOne({
             first_name: firstName,
             last_name: lastName,
@@ -42,7 +44,7 @@ export default function Signup({navigation}) {
             // notification token
         }).then((res) => {
             setLoading(false);
-            navigation.navigate('Drawer');
+            navigation.navigate('Drawer',{id: res.id});
         });
 
     }

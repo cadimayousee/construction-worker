@@ -10,15 +10,6 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {Ionicons} from '@expo/vector-icons'; 
-import Home from './components/Home';
-import Login from './components/Login';
-import Signup from "./components/Signup";
-import Reset from "./components/Reset";
-import OTP from "./components/OTP";
-import ChangePassword from "./components/ChangePassword";                    
-import profile from "./assets/profile.jpg";
-import styles from './styles';
 import 'localstorage-polyfill';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,7 +20,22 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { I18nManager } from 'react-native';
 import localized_strings from './i18n/supportedLanguages';
+import {Ionicons} from '@expo/vector-icons'; 
+import Home from './components/Home';
+import Login from './components/Login';
+import Signup from "./components/Signup";
+import Reset from "./components/Reset";
+import OTP from "./components/OTP";
+import ChangePassword from "./components/ChangePassword";                    
+import profile from "./assets/profile.jpg";
+import styles from './styles';
 import Profile from './components/Profile';
+import Settings from './components/Settings';
+import DummyPage from "./components/DummyPage";
+import EditProfile from "./components/EditProfile";
+import SettingsPassword from './components/SettingsPassword';
+
+const directus = new Directus('https://iw77uki0.directus.app');
 
 export default function App() {
   React.useEffect(() => {
@@ -60,6 +66,10 @@ export default function App() {
             <Stack.Screen name="OTP" component={OTP} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="DummyPage" component={DummyPage} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="SettingsPassword" component={SettingsPassword} />
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaProvider>
@@ -68,7 +78,9 @@ export default function App() {
 
 function Item({ item, navigate, userData}) {
   return (
-    <TouchableOpacity style={styles.listItem} onPress={()=> item.name == i18n.t('logout') ? navigate('Login') : item.name == i18n.t('profile') ?  navigate('Profile',{userData}) : null}>
+    <TouchableOpacity style={styles.listItem} onPress={()=> item.name == i18n.t('logout') ? navigate('Login') 
+    : item.name == i18n.t('profile') ?  navigate('Profile',{userData}) 
+    : item.name == i18n.t('settings') ? navigate('Settings',{userData}) : null}>
       <Ionicons name={item.icon} size={32} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>
@@ -76,7 +88,25 @@ function Item({ item, navigate, userData}) {
 }
 
 function CustomDrawerContent(props) {
-  const userData = props.state.routes[0].params;
+  const id = props.state.routes[0].params;
+  const [userData, setUserData] = React.useState();
+
+  async function getData(){
+    await directus.items('users').readOne(id.id)
+    .then(async(res) => {
+      if(Object.keys(res).length !== 0){ //got user 
+        setUserData(res);
+      }
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  }
+
+  React.useEffect(() => {
+    getData();
+  },[]);
+
   const state = {
     routes:[
         {
@@ -101,13 +131,13 @@ function CustomDrawerContent(props) {
   return (
     <View style={styles.container}>
               <Image source={profile} style={styles.profileImg}/>
-              <Text style={styles.name_text}>{userData.first_name + " " + userData.last_name}</Text> 
-              <Text style={styles.email_text}>{userData.email}</Text> 
+              <Text style={styles.name_text}>{userData?.first_name + " " + userData?.last_name}</Text> 
+              <Text style={styles.email_text}>{userData?.email}</Text> 
               <View style={styles.sidebarDivider}></View>
               <FlatList
                   style={styles.flatList}
                   data={state.routes}
-                  renderItem={({ item }) => <Item  item={item} navigate={props.navigation.navigate} userData={userData}/>}
+                  renderItem={({ item }) => <Item  item={item} navigate={props.navigation.navigate} userData={id}/>}
                   keyExtractor={item => item.name}
               />
           </View>

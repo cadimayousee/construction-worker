@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View , Text , Platform, StyleSheet} from 'react-native';
+import { View , Text , Platform, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location  from 'expo-location'
@@ -8,10 +8,44 @@ import Worker from './Worker';
 import { getDistance, getPreciseDistance } from 'geolib';
 import { getDatabase, ref, set, get, update, child, onValue } from "firebase/database";
 import i18n from 'i18n-js';
+import { Directus } from '@directus/sdk';
+
+const directus = new Directus('https://iw77uki0.directus.app');
+
+// function getFirebaseActiveWorkers(region){
+//   const dbRef = ref(getDatabase());
+//   const db = getDatabase();
+//   get(child(dbRef, `/users`))
+//   .then((res) => {
+//     if( //all conditions fail, have to set state
+//       (workerKeys.current.length !== Object.keys(res.val()).length) ||
+//       (workerKeys.current !== Object.keys(res.val())) ||
+//       (workerValues.current.length !== Object.values(res.val()).length) ||
+//       (workerValues.current !== Object.values(res.val()))
+//       ){
+//         var workerData = [];
+//         workerKeys.current = Object.keys(res.val());
+//         workerValues.current = Object.values(res.val());
+
+//         var worker_ids = Object.keys(res.val());
+//         Object.values(res.val()).forEach((val,index) => {
+//           var distance = calculateDistance(region, val);
+//           // if(distance < 5) //nearby worker
+//             workerData.push({id: worker_ids[index], name: val.username, longitude: val.longitude, latitude: val.latitude, distance: distance});
+//         });
+//         setWorkersLocation(workerData);
+//       }
+//   })
+//   .catch((error) => {
+//     console.log(i18n.t('noOnlineWorkers') + error)
+//   });
+
+// };
 
 export default function Home({navigation}){
   const [region, setRegion] = React.useState();
   const [workersLocation, setWorkersLocation] = React.useState([]);
+  const [searchText, setSearchText] = React.useState('');
   const workerKeys = React.useRef({});
   const workerValues = React.useRef({});
 
@@ -39,35 +73,38 @@ export default function Home({navigation}){
     return (dis/1000);
   }
 
-  function getActiveWorkers(region){
-    const dbRef = ref(getDatabase());
-    const db = getDatabase();
-    get(child(dbRef, `/users`))
+  async function getActiveWorkers(region){
+    await directus.items('workers').readByQuery({limit: -1})
     .then((res) => {
-      if( //all conditions fail, have to set state
-        (workerKeys.current.length !== Object.keys(res.val()).length) ||
-        (workerKeys.current !== Object.keys(res.val())) ||
-        (workerValues.current.length !== Object.values(res.val()).length) ||
-        (workerValues.current !== Object.values(res.val()))
+      if(res.data.length > 0){
+        
+        if( //all conditions fail, have to set state
+        (workerKeys.current.length !== res.data.length) ||
+        (workerKeys.current !== Object.keys(res.data)) ||
+        (workerValues.current.length !== Object.values(res.data).length) ||
+        (workerValues.current !== Object.values(res.data))
         ){
           var workerData = [];
-          workerKeys.current = Object.keys(res.val());
-          workerValues.current = Object.values(res.val());
+          workerKeys.current = Object.keys(res.data);
+          workerValues.current = Object.values(res.data);
+          
+          res.data?.forEach((worker) => {
+              // var distance = calculateDistance(region, worker);
+              // if(distance < 5) //nearby worker
+                var updated_worker = worker;
+                updated_worker.distance = 0 + " " + i18n.t('kmAway');
+                workerData.push(updated_worker);
 
-          var worker_ids = Object.keys(res.val());
-          Object.values(res.val()).forEach((val,index) => {
-            var distance = calculateDistance(region, val);
-            if(distance < 5) //nearby worker
-              workerData.push({id: worker_ids[index], name: val.username, longitude: val.longitude, latitude: val.latitude, distance: distance});
+            setWorkersLocation(workerData);
           });
-          setWorkersLocation(workerData);
+
         }
+      }
     })
     .catch((error) => {
       console.log(i18n.t('noOnlineWorkers') + error)
     });
-  
-  };
+  }
 
   React.useEffect(() => {
     getLocationAsync().then((region) => {
@@ -78,17 +115,22 @@ export default function Home({navigation}){
   //{longitude: -122.084, latitude: 37.4219983}
   //{longitude: 25.101, latitude: 55.178}
 
-  React.useState(() => {
-    const interval = setInterval(() => {
-      if(region)
-        getActiveWorkers(region)
-    },5000);
-  },[]);
+  // React.useState(() => {
+  //   const interval = setInterval(() => {
+  //     if(region)
+  //       getActiveWorkers(region);
+  //   },5000);
+  //   return(() => {
+  //     clearInterval(interval)
+  // })
+  // },[]);
 
   return(
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+
     <View style={styles.container}>
       
-      <SearchBar navigation={navigation} />
+      <SearchBar navigation={navigation} searchText={searchText} setSearchText={setSearchText}/>
 
       <MapView
         style = {{flex : 1}}
@@ -99,15 +141,18 @@ export default function Home({navigation}){
         showsMyLocationButton={true}
         // onUserLocationChange={(region) => updateLocation(region.nativeEvent.coordinate)}
       >
-        {workersLocation.map((worker, index) => {
+        {workersLocation
+        .filter((worker) => worker.category.includes(searchText.toLowerCase()))
+        .map((worker, index) => {
           return(
-            <Worker key={index} worker={{uid : worker.name , distance: worker.distance + ' ' + i18n.t('kmAway'), location: {longitude: worker.longitude, latitude: worker.latitude}}} />
+            <Worker key={index} worker={worker} />
           )
         })}
 
       </MapView>
 
     </View>
+    </TouchableWithoutFeedback>
   );
 
 }

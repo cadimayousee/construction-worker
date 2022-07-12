@@ -13,7 +13,6 @@ import i18n from 'i18n-js';
 export default function ChangePassword ({navigation, route}){
     const userData = route.params;
     const [loading, setLoading] = React.useState(false);
-    const [inputOTP, setInputOTP] = React.useState('');
     const directus = new Directus('https://iw77uki0.directus.app');
     const [pass, setPass] = React.useState('');
     const [confirmPass, setConfirmPass] = React.useState('');
@@ -25,12 +24,12 @@ export default function ChangePassword ({navigation, route}){
         }
         else{
             //patch
-            await directus.items('users').updateOne(userData.id, {
+            await directus.items('users').updateOne(userData, {
                 password: pass
             })
             .then((res) =>{
                 setLoading(false);
-                navigation.navigate('Drawer', userData);
+                navigation.navigate('Drawer', {id: userData});
             })
             .catch((err) => {
                 setLoading(false);

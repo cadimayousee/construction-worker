@@ -5,7 +5,8 @@ import {
     Text, 
     TouchableWithoutFeedback,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    TextInput
 } from 'react-native';
 import { Ionicons , Feather} from '@expo/vector-icons'; 
 import { DrawerActions } from '@react-navigation/native';
@@ -16,24 +17,25 @@ const width = Dimensions.get('window').width;
 export const SearchBar =  function(props){
     
     return(
-        <TouchableOpacity onPress={() => {}} style={styles.container}>
+        <View style={styles.container}>
             <View style = {styles.leftCol}>
                 {/* <Feather name="search" size={25} color="black" style={{alignSelf: 'center'}}/> */}
                 <Ionicons name="hammer-outline" size={25} style={{alignSelf: 'center'}} />
             </View>
 
-            <View style = {styles.centerCol}>
-                <Text style={styles.searchTextStyle}>
-                    {i18n.t('searchHere')}
-                </Text>
-            </View>
+            <TextInput 
+            style={[styles.centerCol, styles.searchTextStyle]}
+            placeholder={i18n.t('searchHere')}
+            onEndEditing={(text) => props.setSearchText(text.nativeEvent.text)}
+            
+            />
 
             <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.toggleDrawer())} style = {styles.rightCol}>
                 {/* <Ionicons name="hammer-outline" size={25} style={{alignSelf: 'center'}} /> */}
                 <Ionicons name="menu" size={25} style={{alignSelf: 'center'}} />
             </TouchableOpacity>
 
-        </TouchableOpacity>
+        </View>
     );
 }
 

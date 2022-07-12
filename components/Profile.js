@@ -7,11 +7,13 @@ import profileImg from "../assets/profile.jpg";
 import {Ionicons} from '@expo/vector-icons'; 
 import Toast from 'react-native-root-toast';
 import i18n from 'i18n-js';
-import { overflow } from 'styled-system';
+import { Directus } from '@directus/sdk';
+import { Loading } from './Loading';
 
-function Item({item, navigate}) {
+function Item({item, navigate, userData}) {
     return (
-        <TouchableOpacity style={styles.listItem} onPress={()=> item.name == i18n.t('logout') ? navigate('Login') : null}>
+        <TouchableOpacity style={styles.listItem} onPress={()=> item.name == i18n.t('logout') ? navigate('Login') 
+        : item.name == i18n.t('settings') ? navigate('Settings',{userData}) : null}>
             <Ionicons name={item.icon} size={32} />
             <Text style={styles.title}>{item.name}</Text>
         </TouchableOpacity>
@@ -19,9 +21,39 @@ function Item({item, navigate}) {
   }
 
 export default function Profile({route, navigation}){
-    const userData = route.params.userData;
-    const width = Dimensions.get('screen').width;
-    const height = Dimensions.get('screen').height;
+  const width = Dimensions.get('screen').width;
+  const height = Dimensions.get('screen').height;
+  const directus = new Directus('https://iw77uki0.directus.app');
+  
+  const id = route.params?.userData;
+  const [userData, setUserData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+
+  async function getData(){
+    await directus.items('users').readOne(id.id)
+    .then(async(res) => {
+      if(Object.keys(res).length !== 0){ //got user 
+        setUserData(res);
+        setLoading(false);
+      }
+    })
+    .catch((error) => {
+      alert(error);
+    });
+  }
+
+  React.useEffect(() => {
+    setLoading(true);
+    getData();
+  },[]);
+
+    var rating;
+    if(userData?.rating == 0 || userData?.users_rated == 0){ //not yet rated
+      rating = i18n.t('notRated');
+    }
+    else{
+      rating = Math.round(userData?.rating/userData?.users_rated) + " ✭";
+    }
 
     const state = {
         routes:[
@@ -30,22 +62,14 @@ export default function Profile({route, navigation}){
                 icon:"file-tray-stacked"
             },
             {
-                name: i18n.t('editProfile'),
-                icon:"pencil"
-            },
-            {
                 name:i18n.t('settings'),
                 icon:"settings-outline"
             },
-            {
-              name:i18n.t('logout'),
-              icon:"exit-outline"
-          },
         ]
     }
 
     //if any of the userdata isnt complete show toast
-    if(userData.address == null || userData.mobile_number == 0){
+    if(userData?.address == null || userData?.mobile_number == 0){
         // Toast.show(i18n.t('toastString'), {
         //     duration: Toast.durations.LONG,
         //     position: 1
@@ -55,31 +79,33 @@ export default function Profile({route, navigation}){
     return (
         <View style={styles.container}>
 
+          {loading && <Loading />}
+
             <TouchableOpacity style={styles.circle}>
                 <Image source={profileImg} style={styles.profileImg}/>
             </TouchableOpacity>
 
-              <Text style={styles.name_text}>{userData.first_name + " " + userData.last_name}</Text> 
+              <Text style={styles.name_text}>{userData?.first_name + " " + userData?.last_name}</Text> 
               {/* <Text style={styles.email_text}>{userData.email}</Text>  */}
 
               <View style = {styles.profileCategories}>
 
                     <View style={{alignItems:'center'}}>
-                        <Text style={styles.number_text}>453</Text>
+                        <Text style={styles.number_text}>{userData?.jobs_created}</Text>
                         <Text style={styles.email_text}>{i18n.t('jobsCreated')}</Text>
                     </View>
 
                     <View style={styles.sidebarDivider} />
 
                     <View style={{alignItems:'center'}}>
-                        <Text style={styles.number_text}>620</Text>
+                        <Text style={styles.number_text}>{userData?.workers_hired}</Text>
                         <Text style={styles.email_text}>{i18n.t('workersHired')}</Text>
                     </View>
 
                     <View style={styles.sidebarDivider} />
 
                     <View style={{alignItems:'center'}}>
-                        <Text style={styles.number_text}>4 ✭</Text>
+                        <Text style={styles.number_text}>{rating}</Text>
                         <Text style={styles.email_text}>{i18n.t('rating')}</Text>
                     </View>
 
@@ -88,7 +114,7 @@ export default function Profile({route, navigation}){
               <FlatList
                   style={styles.flatList}
                   data={state.routes}
-                  renderItem={({ item }) => <Item  item={item} navigate={navigation.navigate}/>}
+                  renderItem={({ item }) => <Item  item={item} navigate={navigation.navigate} userData={id}/>}
                   keyExtractor={item => item.name}
               />
         </View>

@@ -45,7 +45,7 @@ export default function Reset({navigation}){
                 })
                 .then(() => {
                     setLoading(false);
-                    navigation.navigate('OTP', [res.data[0], OTP]);
+                    navigation.navigate('OTP', [res.data[0].id, OTP]);
                     //navigate to OTP screen
                 })
                 .catch((error) => {

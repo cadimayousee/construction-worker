@@ -29,7 +29,7 @@ export default function Login({navigation}) {
           .then((matches) => {
             if(matches == true){ //account valid
               setLoading(false);
-              navigation.navigate('Drawer',res.data[0]);
+              navigation.navigate('Drawer', {id: res.data[0].id});
             }
             else{ //incorrect password
               setLoading(false);
