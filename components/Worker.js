@@ -11,7 +11,7 @@ import {
 import { Ionicons , Feather} from '@expo/vector-icons'; 
 import MapView, { Marker } from 'react-native-maps';
 import { Button, Overlay } from 'react-native-elements';
-import { borderRadius, borderWidth, flexDirection } from 'styled-system';
+import i18n from 'i18n-js';
 
 export default function Worker(props){
     const [data , setData] = React.useState();
@@ -35,7 +35,6 @@ export default function Worker(props){
 
     React.useEffect(() => {
         setData({worker : worker, coordinate: coordinate});
-        console.log(worker)
     },[]);
 
     //open worker details on press
@@ -50,38 +49,40 @@ export default function Worker(props){
 
             <View style={styles.titleHeader}>
                 <Ionicons name='information-circle-outline' size={27} color='grey'/>
-                <Text style={styles.title}>Worker Info: </Text>
+                <Text style={styles.title}>{i18n.t('workerInfo')}</Text>
             </View>
 
             <View style={styles.titleHeader}>
-                <Text style={styles.megatitle}>Name:</Text>
+                <Text style={styles.megatitle}>{i18n.t('workerName')}</Text>
                 <Text style={styles.subtitle}>{worker.first_name + " " + worker.last_name}</Text>
             </View>
 
             <View style={styles.titleHeader}>
-                <Text style={styles.megatitle}>Categories:</Text>
+                <Text style={styles.megatitle}>{i18n.t('categories')}</Text>
                 <Text style={styles.subtitle}>{worker.category}</Text>
             </View>
 
             <View style={styles.titleHeader}>
-                <Text style={styles.megatitle}>Rating:</Text>
+                <Text style={styles.megatitle}>{i18n.t('ratingW')}</Text>
                 <Text style={styles.subtitle}>{worker.rating == 0? 'No Rating' : worker.rating}</Text>
             </View>
 
             <View style={styles.titleHeader}>
                 <Ionicons name='call-outline' size={27} color='grey'/>
-                <Text style={styles.title}>Contact Worker At: </Text>
+                <Text style={styles.title}>{i18n.t('contactW')}</Text>
             </View>
 
             <View style={styles.titleHeader}>
-                <Text style={styles.megatitle}>Email:</Text>
+                <Text style={styles.megatitle}>{i18n.t('emailW')}</Text>
                 <Text style={styles.subtitle}>{worker.email}</Text>
             </View>
 
             <View style={styles.titleHeader}>
-                <Text style={styles.megatitle}>Phone Number:</Text>
+                <Text style={styles.megatitle}>{i18n.t('phoneW')}</Text>
                 <Text style={styles.subtitle}>{worker.mobile_number}</Text>
             </View>
+
+            {/* Message worker now using in app chat messaging -> integration here with firebase */}
 
         </Overlay>
 

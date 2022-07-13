@@ -61,7 +61,20 @@ const en = {
     newPassword: "New Password",
     confirmPassword: "Confirm Password",
     emptyPass: "One or more fields are empty, please fill all the fields to change Password",
-    relogin: "Session expired. Please re login"
+    relogin: "Session expired. Please re login",
+    invalidEmail: "Please input a valid email address",
+    save: 'Save',
+    enter: 'Enter',
+    toast3String: 'Email Address Verified!',
+    userExists: "A User with this email address exists!",
+    relogin2: "User Details Updated! Please re login to refresh data",
+    workerInfo: "Worker Info: ",
+    workerName: "Name:",
+    categories: "Categories:",
+    ratingW: "Rating:",
+    contactW: "Contact Worker At: ",
+    emailW: "Email:",
+    phoneW: "Phone Number:"
 }
 
 // const ar = {

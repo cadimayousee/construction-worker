@@ -53,51 +53,56 @@ export default function SettingsPassword({route,navigation}){
 
     async function changePass(){
         setLoading(true);
+        var flag = false;
 
         if(oldPassword == '' || newPassword == '' || confirmPassword == ''){
             setLoading(false);
             alert(i18n.t('emptyPass'));
+            flag = true;
             return;
         }
 
         if(newPassword !== confirmPassword){
             setLoading(false);
             alert(i18n.t('noPassMatch'));
+            flag = true;
             return;
         }
 
-        await directus.items('users').readOne(id.id)
-        .then(async(res) => {
-            if(Object.keys(res).length !== 0){ //user is correct, verify old password
-              var hash_password = res.password;
-              await directus.utils.hash.verify(oldPassword, hash_password)
-              .then(async (matches) => {
-                if(matches == true){ //old password correct, change password
-                    //patch
-                await directus.items('users').updateOne(id.id, {
-                    password: newPassword
-                })
-                .then((res) =>{
+        if(flag == false){
+            await directus.items('users').readOne(id.id)
+            .then(async(res) => {
+                if(Object.keys(res).length !== 0){ //user is correct, verify old password
+                var hash_password = res.password;
+                await directus.utils.hash.verify(oldPassword, hash_password)
+                .then(async (matches) => {
+                    if(matches == true){ //old password correct, change password
+                        //patch
+                    await directus.items('users').updateOne(id.id, {
+                        password: newPassword
+                    })
+                    .then((res) =>{
+                        setLoading(false);
+                        alert(i18n.t('relogin'));
+                        navigation.navigate('Login');
+                    })
+                    .catch((err) => {
+                        setLoading(false);
+                        alert(err.message);
+                    });
+                    }
+                    else{ //incorrect password
                     setLoading(false);
-                    alert(i18n.t('relogin'));
-                    navigation.navigate('Login');
+                    alert(i18n.t('wrongPassword'))
+                    }
                 })
-                .catch((err) => {
-                    setLoading(false);
-                    alert(err.message);
-                });
                 }
-                else{ //incorrect password
-                  setLoading(false);
-                  alert(i18n.t('wrongPassword'))
+                else{
+                setLoading(false);
+                alert(i18n.t('relogin'));
                 }
-              })
-            }
-            else{
-              setLoading(false);
-              alert(i18n.t('relogin'));
-            }
-          })
+            })
+        }
     }
 
     return(

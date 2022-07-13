@@ -34,6 +34,13 @@ export default function Profile({route, navigation}){
     .then(async(res) => {
       if(Object.keys(res).length !== 0){ //got user 
         setUserData(res);
+            //if any of the userdata isnt complete show toast
+        if(res?.address == null || res?.mobile_number == 0){
+          Toast.show(i18n.t('toastString'), {
+              duration: Toast.durations.LONG,
+              position: 1
+          })
+  }
         setLoading(false);
       }
     })
@@ -66,14 +73,6 @@ export default function Profile({route, navigation}){
                 icon:"settings-outline"
             },
         ]
-    }
-
-    //if any of the userdata isnt complete show toast
-    if(userData?.address == null || userData?.mobile_number == 0){
-        // Toast.show(i18n.t('toastString'), {
-        //     duration: Toast.durations.LONG,
-        //     position: 1
-        // })
     }
     
     return (

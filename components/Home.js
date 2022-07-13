@@ -115,15 +115,15 @@ export default function Home({navigation}){
   //{longitude: -122.084, latitude: 37.4219983}
   //{longitude: 25.101, latitude: 55.178}
 
-  // React.useState(() => {
-  //   const interval = setInterval(() => {
-  //     if(region)
-  //       getActiveWorkers(region);
-  //   },5000);
-  //   return(() => {
-  //     clearInterval(interval)
-  // })
-  // },[]);
+  React.useState(() => {
+    const interval = setInterval(() => {
+      if(region)
+        getActiveWorkers(region);
+    },5000); //5 seconds update
+    return(() => {
+      clearInterval(interval)
+  })
+  },[]);
 
   return(
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

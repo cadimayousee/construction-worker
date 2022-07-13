@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image, TextInput, Button as Button2} from 'react-native';
 import { Input, NativeBaseProvider, Button, Icon, Box, AspectRatio } from 'native-base';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import download from "../assets/download.jpg";
 import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import request from '../request';
 import { Loading } from './Loading';
+import axios from 'axios';
+import Toast from 'react-native-root-toast';
 import i18n from 'i18n-js';
 
 export default function Signup({navigation}) {
@@ -18,40 +20,81 @@ export default function Signup({navigation}) {
     const [pass, setPass] = React.useState('');
     const [confirmPass, setConfirmPass] = React.useState('');
     const [loading, setLoading] = React.useState(false);
-    const [userToken, setUserToken] = React.useState(''); //needs dispatch
 
     const directus = new Directus('https://iw77uki0.directus.app');
+    
 
+    function validateFormat(text){
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+      if (reg.test(text) === false) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    }  
+    
     async function register(){
+      var flag = false;
 
         if(pass !== confirmPass){
-            alert(i18n.t('noPassMatch'))
+            setLoading(false);
+            alert(i18n.t('noPassMatch'));
+            flag = true;
             return;
         }
 
         if(firstName =='' || lastName == '' || pass == '' || email == '' || confirmPass == ''){
-            alert(i18n.t('emptyFields'))
+            setLoading(false);
+            alert(i18n.t('emptyFields'));
+            flag = true;
             return;
         }
 
-        //validate email format and send verification otp
+        const valid = validateFormat(email);
 
-        await directus.items('users').createOne({
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: pass
-            // notification token
-        }).then((res) => {
-            setLoading(false);
-            navigation.navigate('Drawer',{id: res.id});
-        });
+        if(valid == false){
+          setLoading(false);
+          alert(i18n.t('invalidEmail'));
+          flag = true;
+          return;
+        }
+
+        if(valid == true && flag == false){
+          await directus.items('users').readByQuery({
+            filter: {
+              email : email
+            },
+          })
+          .then(async (res) => {
+            if(res.data.length > 0){ //user exists
+              setLoading(false);
+              alert(i18n.t('userExists'));
+              return;
+            }
+            else{
+              await directus.items('users').createOne({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                password: pass
+                // notification token
+              })
+              .then((res) => {
+                  setLoading(false);
+                  navigation.navigate('Drawer',{id: res.id});
+              });
+            }
+          });
+        }
 
     }
 
   return (
     <NativeBaseProvider>
+
         {loading && <Loading />}
+
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
         <View style={styles.Middle}>
@@ -315,5 +358,5 @@ export const styles = StyleSheet.create({
         width: null,
         height: null,
         resizeMode: 'contain'
-      }
+      },
 });

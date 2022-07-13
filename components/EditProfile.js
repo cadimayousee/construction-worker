@@ -27,27 +27,65 @@ function Item({item, setFirstName, setLastName, setMobile, setAddress, setEmail}
     );
 }
 
-async function saveDetails(userData, firstName, lastName, mobile, address, email, setLoading){
+function validate(text){
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }      
+
+async function saveDetails(userData, firstName, lastName, mobile, address, email, setLoading, navigation){
     setLoading(true);
-     //patch
-    await directus.items('users').updateOne(userData.id, {
-        first_name: firstName,
-        last_name: lastName,
-        mobile_number: mobile,
-        address: address,
-        email: email
-    })
-    .then((res) =>{
-        setLoading(false);
-        Toast.show(i18n.t('toast2String'), {
-            duration: Toast.durations.LONG,
-            position: 1
+    var flag = false;
+
+    if(email !== userData?.email){ //changed email
+        const valid = validate(email);
+        if(valid == false){
+            setLoading(false);
+            alert(i18n.t('invalidEmail'));
+            flag = true;
+            return;
+        }
+
+        if(valid == true){
+            await directus.items('users').readByQuery({
+            filter: {
+                email : email
+            },
+            })
+            .then((res) => {
+                if(res.data.length > 0){ //user exists
+                    setLoading(false);
+                    alert(i18n.t('userExists'));
+                    flag = true;
+                    return;
+                }
+            })
+        }
+    }
+
+    if(flag == false){
+        //patch
+        await directus.items('users').updateOne(userData.id, {
+            first_name: firstName,
+            last_name: lastName,
+            mobile_number: mobile,
+            address: address,
+            email: email
         })
-    })
-    .catch((err) => {
-        setLoading(false);
-        alert(err.message);
-    });
+        .then((res) =>{
+            setLoading(false);
+            alert(i18n.t('relogin2'));
+            navigation.navigate('Login');
+        })
+        .catch((err) => {
+            setLoading(false);
+            alert(err.message);
+        });
+    }
 }
 
 export default function EditProfile({route,navigation}){
@@ -131,7 +169,7 @@ export default function EditProfile({route,navigation}){
             /> 
 
             <View style={{marginBottom: 40}}>
-                <Button title='Save' onPress={() => saveDetails(userData,firstName, lastName, mobile, address, email, setLoading)} />
+                <Button title={i18n.t('save')} onPress={() => saveDetails(userData,firstName, lastName, mobile, address, email, setLoading, navigation)} />
             </View>
 
         </View>
