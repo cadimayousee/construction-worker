@@ -26,6 +26,7 @@ export default function Reset({navigation}){
     };
 
     async function verifyEmail(){
+      if(email !== ''){
         await directus.items('users').readByQuery({
             filter: {
               email: email
@@ -61,6 +62,11 @@ export default function Reset({navigation}){
           .catch((error) => {
             alert(error.message)
           })
+      }
+      else{
+        setLoading(false);
+        alert(i18n.t('inputEmail'));
+      }
     }
 
     return (

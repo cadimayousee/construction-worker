@@ -91,12 +91,13 @@ export default function Home({navigation}){
           res.data?.forEach((worker) => {
               // var distance = calculateDistance(region, worker);
               // if(distance < 5) //nearby worker
+              if(worker.now_status == 'online'){
                 var updated_worker = worker;
                 updated_worker.distance = 0 + " " + i18n.t('kmAway');
                 workerData.push(updated_worker);
-
+              }
+            });
             setWorkersLocation(workerData);
-          });
 
         }
       }
@@ -117,7 +118,7 @@ export default function Home({navigation}){
 
   React.useState(() => {
     const interval = setInterval(() => {
-      if(region)
+      // if(region)
         getActiveWorkers(region);
     },5000); //5 seconds update
     return(() => {

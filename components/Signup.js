@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Key
 import { Input, NativeBaseProvider, Button, Icon, Box, AspectRatio } from 'native-base';
 import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import download from "../assets/download.jpg";
+// import download from "../assets/download.jpg";
 import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import request from '../request';
@@ -283,7 +283,7 @@ export default function Signup({navigation}) {
         
 
         <StatusBar style="auto" />
-        <Image source={download} style={styles.image}/>
+        {/* <Image source={download} style={styles.image}/> */}
         </View>
         </TouchableWithoutFeedback>
     </NativeBaseProvider>

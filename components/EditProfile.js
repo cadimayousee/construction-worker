@@ -105,6 +105,11 @@ export default function EditProfile({route,navigation}){
         .then(async(res) => {
           if(Object.keys(res).length !== 0){ //got user 
             setUserData(res);
+            setFirstName(res.first_name);
+            setLastName(res.last_name);
+            setEmail(res.email);
+            setAddress(res.address);
+            setMobile(res.mobile_number);
             setLoading(false);
           }
         })

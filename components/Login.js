@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image} from 'react-native';
 import { Input, NativeBaseProvider, Icon, Box, AspectRatio, Button } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import download from "../assets/download.jpeg";
+// import download from "../assets/download.jpeg";
 import { alignContent, flex, flexDirection, width } from 'styled-system';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
@@ -146,7 +146,7 @@ export default function Login({navigation}) {
         </View>
 
         <StatusBar style="auto" />
-          <Image source={download} style={styles.image}/>
+          {/* <Image source={download} style={styles.image}/> */}
 
         </View>
       </TouchableWithoutFeedback>

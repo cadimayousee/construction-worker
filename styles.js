@@ -49,6 +49,49 @@ const styles = StyleSheet.create({
       flatList:{
         width:"100%",
         marginLeft:30
-      }
+      },
+      title_1:{
+        fontSize:18,
+        // marginLeft:20,
+        marginTop: 5,
+        color: 'grey'
+      },
+      title_2:{
+        fontSize:12,
+        // marginLeft:20,
+        marginTop: 5,
+        color: 'grey'
+      },  
+      subtitle:{
+          fontSize:16,
+          // marginLeft:20
+      },
+    megatitle:{
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 5
+    },
+    titleHeader:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center'
+    },
+    subtitleHeader:{
+      flexDirection: 'column',
+      alignItems: 'center',
+      alignSelf: 'center'
+    },
+    textInput:{
+      borderRadius: 5,
+      borderWidth: 1,
+      width: Dimensions.get('screen').width * 0.7,
+      borderColor: 'grey',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    buttonStyle:{
+      marginTop: 10,
+      backgroundColor: 'transparent'
+    }
 });
 export default styles;

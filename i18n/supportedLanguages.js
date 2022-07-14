@@ -74,7 +74,21 @@ const en = {
     ratingW: "Rating:",
     contactW: "Contact Worker At: ",
     emailW: "Email:",
-    phoneW: "Phone Number:"
+    phoneW: "Phone Number:",
+    inputEmail: "Please input an email address",
+    createJob: "Create A Job: ",
+    jobTitle: "Job title: ",
+    jobDescription: "Job description: ",
+    amountToPay: "Amount to pay: ",
+    amountToPayN: "Please specify amount and if payment is 'One Time Payment' or a 'Rate Per Hour/Day'",
+    workingHours: "Number of working hours: ",
+    jobTitleP: "Job title",
+    jobDescriptionP: "Job description",
+    amountToPayP: "Ex: $10 One Time Payment Or $10 Rate Per Hour",
+    workingHoursP: "Number of hours needed to complete the job approx.",   
+    buttonTitleJob: "Submit to nearby workers",
+    workersNumber: "Number of workers needed",
+    workersNumberP: "Number of workers to complete job"
 }
 
 // const ar = {
