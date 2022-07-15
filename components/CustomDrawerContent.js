@@ -10,7 +10,7 @@ import i18n from 'i18n-js';
 
 const directus = new Directus('https://iw77uki0.directus.app');
 
-async function postJob(jobTitle, jobDescrp, amount, workers, hours, toggleOverlay, setLoading){
+async function postJob(jobTitle, jobDescrp, amount, workers, hours, toggleOverlay, setLoading, id){
     setLoading(true);
 
     await directus.items('jobs').createOne({
@@ -18,7 +18,8 @@ async function postJob(jobTitle, jobDescrp, amount, workers, hours, toggleOverla
         description: jobDescrp,
         pay_amount : amount,
         number_of_workers: workers,
-        number_of_hours: hours
+        number_of_hours: hours,
+        contractor: id
     })
     .then((res) => {
         setLoading(false);
@@ -84,7 +85,7 @@ function Item({ item, navigate, userData}) {
           </View>
   
           <View style={styles.buttonStyle}>
-            <Button title={i18n.t('buttonTitleJob')} onPress={() => postJob(jobTitle, jobDescr, amount, workers, hours, toggleOverlay, setLoading)}/>
+            <Button title={i18n.t('buttonTitleJob')} onPress={() => postJob(jobTitle, jobDescr, amount, workers, hours, toggleOverlay, setLoading, userData.id)}/>
           </View>
   
       </Overlay><TouchableOpacity style={styles.listItem} onPress={() => item.name == i18n.t('logout') ? navigate('Login')

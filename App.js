@@ -32,7 +32,7 @@ import DummyPage from "./components/DummyPage";
 import EditProfile from "./components/EditProfile";
 import SettingsPassword from './components/SettingsPassword';
 import CustomDrawerContent from "./components/CustomDrawerContent";
-
+import Chat from './components/Chat';
 
 export default function App() {
   React.useEffect(() => {
@@ -56,6 +56,7 @@ export default function App() {
     <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Chat" component={Chat} />
           <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Drawer" component={MyDrawer} />
             <Stack.Screen name="Signup" component={Signup} />
