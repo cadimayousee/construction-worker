@@ -91,7 +91,8 @@ function Item({ item, navigate, userData}) {
       </Overlay><TouchableOpacity style={styles.listItem} onPress={() => item.name == i18n.t('logout') ? navigate('Login')
         : item.name == i18n.t('profile') ? navigate('Profile', { userData })
           : item.name == i18n.t('settings') ? navigate('Settings', { userData })
-            : item.name == i18n.t('postJob') ? toggleOverlay() : null}>
+            : item.name == i18n.t('postJob') ? toggleOverlay() 
+             : item.name == i18n.t('viewJobs') ? navigate('Jobs',{userData}) : null}>
           <Ionicons name={item.icon} size={32} />
           <Text style={styles.title}>{item.name}</Text>
         </TouchableOpacity></>
@@ -123,6 +124,10 @@ function Item({ item, navigate, userData}) {
           {
             name:i18n.t('postJob'),
             icon:"create-outline"
+          },
+          {
+            name: i18n.t('viewJobs'),
+            icon:"file-tray-stacked"
           },
           {
               name: i18n.t('profile'),

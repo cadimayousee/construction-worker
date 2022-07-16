@@ -65,10 +65,6 @@ export default function Profile({route, navigation}){
     const state = {
         routes:[
             {
-                name: i18n.t('viewJobs'),
-                icon:"file-tray-stacked"
-            },
-            {
                 name:i18n.t('settings'),
                 icon:"settings-outline"
             },

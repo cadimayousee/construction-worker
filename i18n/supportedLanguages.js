@@ -40,7 +40,7 @@ const en = {
     noPermission: "Permission to access location was denied",
     noOnlineWorkers: "Cannot Get Online Workers ...",
     kmAway: "km away",
-    viewJobs: "View Recent Jobs",
+    viewJobs: "View All Jobs",
     editProfile: "Edit Profile Details",
     jobsCreated: "Jobs created",
     workersHired: "Workers hired",
@@ -88,7 +88,17 @@ const en = {
     workingHoursP: "Number of hours needed to complete the job approx.",   
     buttonTitleJob: "Submit to nearby workers",
     workersNumber: "Number of workers needed",
-    workersNumberP: "Number of workers to complete job"
+    workersNumberP: "Number of workers to complete job",
+    jobTitle: "Title: ",
+    jobDescription: "Description: ",
+    payAmount: "Payment: ",
+    workersNeeded: "Number of workers needed: ",
+    workersRemaing: "Number of workers remaining: ",
+    hours: "Number of working hours: ",
+    contact: "CONTACT WORKER",
+    declineJ: "🕓 CANCEL JOB",
+    status: 'Job Status: ',
+    markCompleted: 'MARK JOB COMPLETED'
 }
 
 // const ar = {

@@ -33,6 +33,7 @@ import EditProfile from "./components/EditProfile";
 import SettingsPassword from './components/SettingsPassword';
 import CustomDrawerContent from "./components/CustomDrawerContent";
 import Chat from './components/Chat';
+import Jobs from './components/Jobs';
 
 export default function App() {
   React.useEffect(() => {
@@ -49,15 +50,13 @@ export default function App() {
       I18nManager.allowRTL(false);  
       I18nManager.forceRTL(false); 
     }
-    console.log("locale " + i18n.locale);
   },[]);
 
   return (
     <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Chat" component={Chat} />
-          <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Drawer" component={MyDrawer} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Reset" component={Reset} />
@@ -68,6 +67,8 @@ export default function App() {
             <Stack.Screen name="DummyPage" component={DummyPage} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="SettingsPassword" component={SettingsPassword} />
+            <Stack.Screen name="Jobs" component={Jobs} />
+            <Stack.Screen name="Chat" component={Chat} />
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaProvider>
