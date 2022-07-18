@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Key
 import { Input, NativeBaseProvider, Icon, Box, AspectRatio, Button } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 // import download from "../assets/download.jpeg";
-import { alignContent, flex, flexDirection, width } from 'styled-system';
+import messaging from '@react-native-firebase/messaging';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
 import i18n from 'i18n-js';
@@ -15,7 +15,27 @@ export default function Login({navigation}) {
     const [email, setEmail] = React.useState('esraa@cadimayouseeit.com');
     const [pass, setPass] = React.useState('esraa123');
     const [loading, setLoading] = React.useState(false);
+    const [token, setToken] = React.useState('');
     const directus = new Directus('https://iw77uki0.directus.app');
+
+    async function requestToken() {
+      let token;
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+      await messaging().getToken().then(async (token) => {
+        console.log("TOKEN " + token);
+        await messaging().subscribeToTopic('users')
+        .then(() => { 
+          console.log('subscribed!');
+          return token;
+        })
+      })
+    }
 
     async function login(){
       await directus.items('users').readByQuery({
@@ -25,11 +45,16 @@ export default function Login({navigation}) {
       }).then(async(res) => {
         if(res.data.length > 0){ //user with this email exists
           var hash_password = res.data[0].password;
+          var user_id = res.data[0].id;
           await directus.utils.hash.verify(pass, hash_password)
-          .then((matches) => {
+          .then(async (matches) => {
             if(matches == true){ //account valid
-              setLoading(false);
-              navigation.navigate('Drawer', {id: res.data[0].id});
+              await directus.items('users').updateOne(user_id, {
+                notification_token : token
+              }).then(() => {
+                  setLoading(false);
+                  navigation.navigate('Drawer', {id: res.data[0].id});
+              })
             }
             else{ //incorrect password
               setLoading(false);
@@ -43,6 +68,10 @@ export default function Login({navigation}) {
         }
       })
     }
+
+    React.useEffect(() => {
+      requestToken().then((res) => setToken(res));
+    },[]);
 
   return (
     <NativeBaseProvider>

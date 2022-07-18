@@ -10,7 +10,6 @@ import { Directus } from '@directus/sdk';
 import request from '../request';
 import { Loading } from './Loading';
 import axios from 'axios';
-import Toast from 'react-native-root-toast';
 import i18n from 'i18n-js';
 
 export default function Signup({navigation}) {

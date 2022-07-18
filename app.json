@@ -2,6 +2,7 @@
   "expo": {
     "name": "construction-worker",
     "slug": "construction-worker",
+    "jsEngine" : "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,6 +20,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "requireFullScreen" : true,
       "bundleIdentifier": "com.cadimayouseeit.constructionWorker",
       "config":{
         "googleMapsApiKey": "AIzaSyB10FuMytiHIS1hS715px9neYV8POj4iTg"
@@ -27,8 +29,13 @@
         "NSCameraUsageDescription": "We need to use your camera to display your profile picture",
         "NSLocationWhenInUseUsageDescription": "We need to use your location to display nearby workers and distance",
         "NSLocationAlwaysUsageDescription": "We need to use your location to display nearby workers and distance",
-        "NSLocationUsageDescription": "We need to use your location to display nearby workers and distance"
-      }
+        "NSLocationUsageDescription": "We need to use your location to display nearby workers and distance",
+        "UIBackgroundModes" : [
+          "fetch",
+          "remote-notification"
+        ]
+      },
+      "googleServicesFile" : "./GoogleService-Info.plist"
     },
     "android": {
       "package": "com.cadimayouseeit.constructionWorker",
@@ -38,10 +45,16 @@
       },
       "config": {
         "googleMaps": { "apiKey": "AIzaSyCPdOerxA3upMhvrOPMXoIaU2czY2rISmo" }   
-     }
+     },
+     "permissions" : ["NOTIFICATIONS"],
+     "useNextNotificationsApi" : true,
+     "googleServicesFile" : "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins" : [
+      "@react-native-firebase/app"
+    ]
   }
 }

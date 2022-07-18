@@ -9,6 +9,9 @@ import { getDistance, getPreciseDistance } from 'geolib';
 import { getDatabase, ref, set, get, update, child, onValue } from "firebase/database";
 import i18n from 'i18n-js';
 import { Directus } from '@directus/sdk';
+import messaging from "@react-native-firebase/messaging";
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
 
 const directus = new Directus('https://iw77uki0.directus.app');
 
@@ -42,10 +45,11 @@ const directus = new Directus('https://iw77uki0.directus.app');
 
 // };
 
-export default function Home({navigation}){
+export default function Home({route, navigation}){
   const [region, setRegion] = React.useState();
   const [workersLocation, setWorkersLocation] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
+  const user_id = route.params;
   const workerKeys = React.useRef({});
   const workerValues = React.useRef({});
 

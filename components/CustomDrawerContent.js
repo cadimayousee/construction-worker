@@ -6,9 +6,35 @@ import profile from "../assets/profile.jpg"
 import { Overlay } from 'react-native-elements';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
+import axios from 'axios';
 import i18n from 'i18n-js';
 
 const directus = new Directus('https://iw77uki0.directus.app');
+
+async function notifyWorkers(setLoading, toggleOverlay){
+    const yourServerKey = 'AAAAcoIZCrY:APA91bHSYy6335nFe3dN8ixg_WD5DfLZNK0yU_ZXQ7fPGZkLVyZyYxOm5yvk1W-ArfR54Qr1jQRs_IzTQ4qY4fEka2xDcm79am1MsaVDZowRWE7cHDq56L9yAn8XthLEA0PsbvTYKlJ3';
+    await axios({
+      method: 'post',
+      url: 'https://fcm.googleapis.com/fcm/send',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": ['key', yourServerKey].join('=')
+      },
+      data: {
+        to: "/topics/workers",
+        notification: {
+          title: "Contractor near you posted a new job!",
+          body: "Check it out"
+        }
+      }
+    })
+  .then(() => {
+    setLoading(false);
+    toggleOverlay();
+    alert('Job Posted!')
+  })
+  .catch((err) => alert(err))
+}
 
 async function postJob(jobTitle, jobDescrp, amount, workers, hours, toggleOverlay, setLoading, id){
     setLoading(true);
@@ -21,10 +47,8 @@ async function postJob(jobTitle, jobDescrp, amount, workers, hours, toggleOverla
         number_of_hours: hours,
         contractor: id
     })
-    .then((res) => {
-        setLoading(false);
-        toggleOverlay();
-        alert('Job Posted!')
+    .then(async (res) => {
+        notifyWorkers(setLoading, toggleOverlay);
     })
     .catch((error) => {
         alert(error);
