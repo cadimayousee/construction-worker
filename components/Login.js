@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Key
 import { Input, NativeBaseProvider, Icon, Box, AspectRatio, Button } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 // import download from "../assets/download.jpeg";
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import { Directus } from '@directus/sdk';
 import { Loading } from './Loading';
 import i18n from 'i18n-js';
@@ -18,24 +18,23 @@ export default function Login({navigation}) {
     const [token, setToken] = React.useState('');
     const directus = new Directus('https://iw77uki0.directus.app');
 
-    async function requestToken() {
-      let token;
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-      }
-      await messaging().getToken().then(async (token) => {
-        console.log("TOKEN " + token);
-        await messaging().subscribeToTopic('users')
-        .then(() => { 
-          console.log('subscribed!');
-          return token;
-        })
-      })
-    }
+    // async function requestToken() {
+    //   const authStatus = await messaging().requestPermission();
+    //   const enabled =
+    //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    //   if (enabled) {
+    //     console.log('Authorization status:', authStatus);
+    //   }
+    //   await messaging().getToken().then(async (token) => {
+    //     console.log("TOKEN " + token);
+    //     await messaging().subscribeToTopic('users')
+    //     .then(() => { 
+    //       console.log('subscribed!');
+    //       return token;
+    //     })
+    //   })
+    // }
 
     async function login(){
       await directus.items('users').readByQuery({
@@ -70,7 +69,7 @@ export default function Login({navigation}) {
     }
 
     React.useEffect(() => {
-      requestToken().then((res) => setToken(res));
+      // requestToken().then((res) => setToken(res));
     },[]);
 
   return (

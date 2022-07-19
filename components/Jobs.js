@@ -8,6 +8,7 @@ import { Loading } from './Loading';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import i18n from 'i18n-js';
+import { fireDB } from '../firebase';
 
 const directus = new Directus('https://iw77uki0.directus.app');
 
@@ -63,31 +64,60 @@ export default function Jobs({route, navigation}){
     );
 
     async function openChat(worker_id){
+
         setLoading(true);
-        //see if an existing chat was created
-        await directus.items('chats').readByQuery({filter : {
-            contractor: id,
-            worker: worker_id,
-        }})
-        .then(async (data) => {
-            var chat_id;
-            if(data.data.length > 0){ //chat was opened already 
-                chat_id = data.data[0].id;
-            }
-            else{
-                await directus.items('chats').createOne({
-                    contractor: id,
-                    worker: worker_id,
-                })
-                .then((res) => {
-                    chat_id = res.id;
-                });
-            }
-            await directus.items('users').readOne(id)
-            .then((info) => {
-                setLoading(false);
-                navigation.navigate('Chat', {chat_id: chat_id, user_id: id, user_info: info});
-            })
+
+        // //see if an existing chat was created using directus
+        // await directus.items('chats').readByQuery({filter : {
+        //     contractor: id,
+        //     worker: worker_id,
+        // }})
+        // .then(async (data) => {
+        //     var chat_id;
+        //     if(data.data.length > 0){ //chat was opened already 
+        //         chat_id = data.data[0].id;
+        //     }
+        //     else{
+        //         await directus.items('chats').createOne({
+        //             contractor: id,
+        //             worker: worker_id,
+        //         })
+        //         .then((res) => {
+        //             chat_id = res.id;
+        //         });
+        //     }
+
+        //see if an existing chat was created using firebase
+        const chats = fireDB.collection('chats');
+        var snapshot = chats.where('contractor', '==', id);
+        snapshot = await chats.where('worker', '==', worker_id).get();
+        var chat_id;
+
+        if (snapshot.empty) {//create chat document
+
+            const contractor = id;
+            const worker = worker_id;
+            const messages = [];
+
+            const new_chat = await fireDB.collection('chats').add({
+                messages,
+                contractor,
+                worker
+            });
+
+            chat_id = new_chat.id;
+        }  
+        else{ //chat exists
+            snapshot.forEach(async (doc) => {
+                chat_id = doc.id;
+            });
+        }
+        
+
+        await directus.items('users').readOne(id)
+        .then((info) => {
+            setLoading(false);
+            navigation.navigate('Chat', {chat_id: chat_id, user_id: id, user_info: info, worker_id: worker_id});
         })
     }
 

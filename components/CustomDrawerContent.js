@@ -11,6 +11,17 @@ import i18n from 'i18n-js';
 
 const directus = new Directus('https://iw77uki0.directus.app');
 
+// online workers will be subscribed to topic otherwise unsubscibe on logout *note*
+//notification flow:
+//get online workers, calculate distance, only those who are 5m distance subscribe to new topic called near_workers,
+//send notifications
+
+//worker side:
+//after acceptance, send notification to contractor token only.
+//any worker/contractor action : send notification to the other side
+//clicking on notification in background: takes u to associated tab 
+//register background handlers for both apps
+
 async function notifyWorkers(setLoading, toggleOverlay){
     const yourServerKey = 'AAAAcoIZCrY:APA91bHSYy6335nFe3dN8ixg_WD5DfLZNK0yU_ZXQ7fPGZkLVyZyYxOm5yvk1W-ArfR54Qr1jQRs_IzTQ4qY4fEka2xDcm79am1MsaVDZowRWE7cHDq56L9yAn8XthLEA0PsbvTYKlJ3';
     await axios({

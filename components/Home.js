@@ -9,7 +9,6 @@ import { getDistance, getPreciseDistance } from 'geolib';
 import { getDatabase, ref, set, get, update, child, onValue } from "firebase/database";
 import i18n from 'i18n-js';
 import { Directus } from '@directus/sdk';
-import messaging from "@react-native-firebase/messaging";
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
